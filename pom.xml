@@ -50,11 +50,6 @@
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>me.ialistannen.javadocbot.JavadocBot</mainClass>
-            </manifest>
-          </archive>
         </configuration>
         <executions>
           <execution>
@@ -71,36 +66,16 @@
 
   <repositories>
     <repository>
-      <id>jcenter</id>
-      <name>jcenter-bintray</name>
-      <url>http://jcenter.bintray.com</url>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
   <dependencies>
     <dependency>
-      <groupId>net.dv8tion</groupId>
-      <artifactId>JDA</artifactId>
-      <version>LATEST</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.21</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.1.7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>1.1.7</version>
     </dependency>
 
     <dependency>
@@ -110,17 +85,19 @@
       <scope>compile</scope>
     </dependency>
 
+    <!--Assume no local install-->
+    <!--<dependency>-->
+    <!--<groupId>me.ialistannen</groupId>-->
+    <!--<artifactId>ConvertHTMLToDiscord</artifactId>-->
+    <!--<version>1.0.5-SNAPSHOT</version>-->
+    <!--</dependency>-->
     <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.7</version>
+      <groupId>com.github.I-Al-Istannen</groupId>
+      <artifactId>ConvertHTMLToDiscord</artifactId>
+      <version>43ef124</version>
     </dependency>
 
-    <dependency>
-      <groupId>me.ialistannen</groupId>
-      <artifactId>ConvertHTMLToDiscord</artifactId>
-      <version>1.0.5-SNAPSHOT</version>
-    </dependency>
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>

@@ -24,7 +24,7 @@ public class JsoupUtil {
   private static final Logger LOGGER = LoggerFactory.getLogger(JsoupUtil.class);
 
   /**
-   * Parses an URL to a {@link Jsoup} {@link Documentstring}
+   * Parses an URL to a {@link Jsoup} {@link Document}
    *
    * @param url The url
    * @return The parsed document

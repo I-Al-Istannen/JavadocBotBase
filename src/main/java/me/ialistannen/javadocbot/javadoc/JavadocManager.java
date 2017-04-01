@@ -172,10 +172,4 @@ public class JavadocManager {
     }
     return true;
   }
-
-  public static void main(String[] args) {
-    JavadocManager manager = new JavadocManager();
-    manager.getSettings().setBaseUrl("http://home.dv8tion.net:8080/job/JDA/javadoc/");
-    manager.index();
-  }
 }
