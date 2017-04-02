@@ -7,7 +7,7 @@ package me.ialistannen.javadocbot.javadoc;
  */
 public class JavadocSettings {
 
-  private String baseUrl;
+  private String baseUrl = "https://docs.oracle.com/javase/8/docs/api/";
 
   /**
    * @return The current base url
@@ -19,7 +19,8 @@ public class JavadocSettings {
   /**
    * @param baseUrl The new base url for javadoc lookup
    */
-  public void setBaseUrl(String baseUrl) {
+  public JavadocSettings setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
+    return this;
   }
 }

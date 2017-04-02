@@ -36,13 +36,21 @@ public class JavadocManager {
   private Map<String, Package> packageMap = new HashMap<>();
   private Multimap<String, JavadocClass> classMap = HashMultimap.create();
 
+  /**
+   * Uses the default {@link JavadocSettings}
+   */
   public JavadocManager() {
-    settings = new JavadocSettings();
-    packageParser = new PackageParser(settings);
-    classParser = new ClassParser(settings);
-    methodParser = new MethodParser();
+    this(new JavadocSettings());
+  }
 
-    settings.setBaseUrl("https://docs.oracle.com/javase/8/docs/api/");
+  /**
+   * @param settings The {@link JavadocSettings} to use. Will be the same as {@link #getSettings()}
+   */
+  public JavadocManager(JavadocSettings settings) {
+    this.settings = settings;
+    packageParser = new PackageParser(this.settings);
+    classParser = new ClassParser(this.settings);
+    methodParser = new MethodParser();
   }
 
   /**
