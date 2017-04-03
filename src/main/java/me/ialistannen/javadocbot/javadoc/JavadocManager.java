@@ -78,14 +78,22 @@ public class JavadocManager {
   }
 
   /**
+   * Returns all classes with the exact given name.
+   * <p>
+   * Does not consider packages. ONLY pass the class name.
+   *
    * @param name The name of the class
    * @return The classes, if any
    */
-  public Collection<JavadocClass> getClass(String name) {
+  public Collection<JavadocClass> getClassesExact(String name) {
     return Collections.unmodifiableCollection(classMap.get(name));
   }
 
   /**
+   * Returns all classes ending in the given name. <em>Includes</em> packages.
+   * <p>
+   * You can pass a fully qualified name in here.
+   *
    * @param name The name of the class
    * @return Any class ending in that sequence, including package names
    */
@@ -110,7 +118,9 @@ public class JavadocManager {
   }
 
   /**
-   * @param name The name of the package
+   * Returns a package by its name.
+   *
+   * @param name The name of the package. Fully qualified, case sensitive.
    * @return The package, if any
    */
   public Optional<Package> getPackage(String name) {
