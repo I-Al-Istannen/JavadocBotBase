@@ -33,7 +33,8 @@ if (classes.isEmpty()) {
 JavadocClass javadocClass = classes.iterator().next();
 String javadocClassName = javadocClass.getNameWithModifiers();
 String javadocClassUrl = javadocClass.getUrl();
-String classHierarchy = JavadocUtil.trimToSize(javadocClass.getExtendsImplements(), 1024);String classDescription = JavadocUtil.trimToSize(javadocClass.getDescription(), 1024);
+String classHierarchy = JavadocUtil.trimToSize(javadocClass.getExtendsImplements(), 1024);
+String classDescription = JavadocUtil.trimToSize(javadocClass.getDescription(), 1024);
 ```
 
 Methods can be done some of the same way, but are done (instead of grabbing the classes directly you do the follow, the following code is used with the input `String#contains`):
