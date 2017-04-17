@@ -2,10 +2,12 @@ package me.ialistannen.javadocbot.javadoc;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -19,6 +21,8 @@ import me.ialistannen.javadocbot.javadoc.parsing.ClassParser;
 import me.ialistannen.javadocbot.javadoc.parsing.MethodParser;
 import me.ialistannen.javadocbot.javadoc.parsing.PackageParser;
 import me.ialistannen.javadocbot.util.ArrayUtil;
+import me.ialistannen.javadocbot.util.ListUtil;
+import me.ialistannen.javadocbot.util.Pair;
 
 /**
  * Manages the retrieval of Javadoc
@@ -85,8 +89,8 @@ public class JavadocManager {
    * @param name The name of the class
    * @return The classes, if any
    */
-  public Collection<JavadocClass> getClassesExact(String name) {
-    return Collections.unmodifiableCollection(classMap.get(name));
+  public List<JavadocClass> getClassesExact(String name) {
+    return new ArrayList<>(classMap.get(name));
   }
 
   /**
@@ -97,7 +101,7 @@ public class JavadocManager {
    * @param name The name of the class
    * @return Any class ending in that sequence, including package names
    */
-  public Collection<JavadocClass> getClassEndingIn(String name) {
+  public List<JavadocClass> getClassEndingIn(String name) {
     String className = ArrayUtil.getLast(name.split("\\."));
     return getAllClasses().stream()
         .filter(javadocClass -> javadocClass.getName().equalsIgnoreCase(className))
@@ -113,8 +117,8 @@ public class JavadocManager {
    *
    * @return All classes in the Javadoc
    */
-  public Collection<JavadocClass> getAllClasses() {
-    return Collections.unmodifiableCollection(classMap.values());
+  public List<JavadocClass> getAllClasses() {
+    return new ArrayList<>(classMap.values());
   }
 
   /**
@@ -147,7 +151,7 @@ public class JavadocManager {
    * @param javadocClass The class to get the methods for
    * @return All methods for the class
    */
-  public Collection<JavadocMethod> getAllMethods(JavadocClass javadocClass) {
+  public List<JavadocMethod> getAllMethods(JavadocClass javadocClass) {
     return methodParser.getMethods(javadocClass);
   }
 
@@ -162,7 +166,7 @@ public class JavadocManager {
    * @param methodName The name of the method, the user entered
    * @return All parameters the user entered
    */
-  private Collection<String> getParameters(String methodName) {
+  private List<String> getParameters(String methodName) {
     if (!methodName.contains("(")) {
       return Collections.emptyList();
     }
@@ -179,12 +183,12 @@ public class JavadocManager {
    * @return True if the parameters match
    */
   private boolean hasMatchingParameters(Collection<String> userEntered, JavadocMethod method) {
-    Map<String, String> parameters = method.getParameters();
+    List<Pair<String, String>> parameters = method.getParameters();
     if (parameters.size() != userEntered.size()) {
       return false;
     }
     for (String s : userEntered) {
-      if (!parameters.containsKey(s)) {
+      if (!ListUtil.contains(parameters, s, Pair::getKey)) {
         return false;
       }
     }

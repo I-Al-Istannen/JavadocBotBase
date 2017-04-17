@@ -1,12 +1,14 @@
 package me.ialistannen.javadocbot.javadoc.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import me.ialistannen.javadocbot.javadoc.parsing.MethodParser;
+import me.ialistannen.javadocbot.util.Pair;
+import me.ialistannen.javadocbot.util.StringUtil;
 
 /**
  * A Javadoc method
@@ -84,7 +86,7 @@ public class JavadocMethod extends JavadocElement {
    * @return The name of the method with parameters.
    */
   public String getNameWithParameters() {
-    String parameters = getParameters().entrySet().stream()
+    String parameters = getParameters().stream()
         .map(entry -> entry.getKey() + " " + entry.getValue())
         .collect(Collectors.joining(", "));
     return getName() + "(" + parameters + ")";
@@ -158,10 +160,10 @@ public class JavadocMethod extends JavadocElement {
    *
    * @return The method parameters. Empty if none
    */
-  public Map<String, String> getParameters() {
-    Map<String, String> map = new HashMap<>();
+  public List<Pair<String, String>> getParameters() {
+    List<Pair<String, String>> parameters = new ArrayList<>(3);
 
-    String declaration = getDeclaration();
+    String declaration = StringUtil.stripFormatting(getDeclaration());
     declaration = declaration.substring(declaration.indexOf("(") + 1);
     declaration = declaration.substring(0, declaration.indexOf(")"));
 
@@ -175,12 +177,12 @@ public class JavadocMethod extends JavadocElement {
       if (tmp == null) {
         tmp = matcher.group(1);
       } else {
-        map.put(tmp, matcher.group(1));
+        parameters.add(new Pair<>(tmp, matcher.group(1)));
         tmp = null;
       }
     }
 
-    return map;
+    return parameters;
   }
 
   @Override

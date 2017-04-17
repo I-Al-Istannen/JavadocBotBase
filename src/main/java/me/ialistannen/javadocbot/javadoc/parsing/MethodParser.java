@@ -2,7 +2,6 @@ package me.ialistannen.javadocbot.javadoc.parsing;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import me.ialistannen.javadocbot.javadoc.model.JavadocClass;
@@ -45,7 +44,7 @@ public class MethodParser {
     return HtmlToDiscordUtil.convert(html, javadocMethod.getContainingClass().getUrl());
   }
 
-  public Collection<JavadocMethod> getMethods(JavadocClass javadocClass) {
+  public List<JavadocMethod> getMethods(JavadocClass javadocClass) {
     Document document = JsoupUtil.parseUrl(javadocClass.getUrl());
     Elements anchors = document.getElementsByAttributeValue("name", "method.summary");
     if (anchors.isEmpty()) {
@@ -58,7 +57,7 @@ public class MethodParser {
       throw new NoSuchElementException("Couldn't find table");
     }
 
-    Collection<JavadocMethod> methods = new HashSet<>();
+    List<JavadocMethod> methods = new ArrayList<>();
 
     for (Element row : table.getElementsByTag("tr")) {
       Element firstColumn = ensureExists(
@@ -105,18 +104,6 @@ public class MethodParser {
   private String extractReturnType(Element firstColumn) {
     return firstColumn.html();
   }
-
-//  /**
-//   * @param secondColumn The <em>second</em> column
-//   * @return The method declaration
-//   */
-//  private String extractDeclaration(Element secondColumn) {
-//    Element memberNameLink = ensureExists(
-//        secondColumn.getElementsByClass("memberNameLink").get(0),
-//        "memberNameLink"
-//    );
-//    return memberNameLink.parent().html();
-//  }
 
   /**
    * @param secondColumn The <em>second</em> column
