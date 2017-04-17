@@ -32,7 +32,7 @@ public class JsoupUtil {
    */
   public static Document parseUrl(String url) {
     try {
-      return Jsoup.parse(getUrl(url), 10000);
+      return Jsoup.connect(getUrl(url)).userAgent("Mozilla/5.0").timeout(10000).get();
     } catch (IOException e) {
       LOGGER.warn("Couldn't connect to url", e);
       throw new RuntimeException("Error while connecting", e);
