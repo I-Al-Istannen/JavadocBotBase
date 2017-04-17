@@ -60,4 +60,14 @@ JavadocMethod method = methodOptional.get();
 
 Packages are done almost the exact same as classes, and are formatted like: `java.util`
 
+
+Maven:
+```maven
+		<dependency>
+			<groupId>me.ialistannen</groupId>
+			<artifactId>JavadocBot</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+```
+
 Happy Javadocing!
