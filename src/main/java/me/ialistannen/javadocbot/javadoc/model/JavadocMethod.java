@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import me.ialistannen.javadocbot.javadoc.parsing.MethodParser;
 
 /**
@@ -58,6 +59,15 @@ public class JavadocMethod extends JavadocElement {
   }
 
   /**
+   * Returns the method declaration.
+   *
+   * <p>It has the form "{@code execute(CommandSender sender, String currentAlias, String[] args)}".
+   * <br>As always it <em>will</em> already be markdown formatted. This is important, as links will
+   * look different.
+   *
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
+   *
    * @return The declaration of the method
    */
   public String getDeclaration() {
@@ -65,6 +75,26 @@ public class JavadocMethod extends JavadocElement {
   }
 
   /**
+   * Returns the name of the method with the parameters (type and name).
+   * <p>It has the following format: "{@code scalb(float f, int scaleFactor)}"
+   *
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
+   *
+   * @return The name of the method with parameters.
+   */
+  public String getNameWithParameters() {
+    String parameters = getParameters().entrySet().stream()
+        .map(entry -> entry.getKey() + " " + entry.getValue())
+        .collect(Collectors.joining(", "));
+    return getName() + "(" + parameters + ")";
+  }
+
+  /**
+   * Returns the return value of the method.
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
+   *
    * @return The return value
    */
   public String getReturnValue() {
@@ -72,13 +102,21 @@ public class JavadocMethod extends JavadocElement {
   }
 
   /**
-   * @return A short descriütion of the method, if any
+   * Returns the (typically) first line of the javadoc of the method
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
+   *
+   * @return A short description of the method, if any
    */
   public String getShortDescription() {
     return shortDescription;
   }
 
   /**
+   * This methods returns the {@link JavadocClass} the method is defined inside.
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
+   *
    * @return The {@link JavadocClass} containing this {@link JavadocMethod}
    */
   public JavadocClass getContainingClass() {
@@ -93,7 +131,7 @@ public class JavadocMethod extends JavadocElement {
   }
 
   /**
-   * @return The exceptions it may throw
+   * @return The <em>checked</em> exceptions it may throw (declared using {@code throws})
    */
   public String getExceptions() {
     Matcher matcher = Pattern.compile(
@@ -114,6 +152,9 @@ public class JavadocMethod extends JavadocElement {
    * Format:
    * <br><em>Key:</em> Type
    * <br><em>Value:</em> Name
+   *
+   * <p>
+   * This method will <em>not</em> cause an additional web request.
    *
    * @return The method parameters. Empty if none
    */
