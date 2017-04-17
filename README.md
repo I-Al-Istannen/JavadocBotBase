@@ -90,5 +90,9 @@ javadocPackage.getUrl(); // 'https://docs.oracle.com/javase/8/docs/api/java/util
 javadocPackage.getClasses(); // '[Long list]'
 ```
 
+### Maven
+It is currently not in the maven central repo or JCenter.  
+You can obtain it using [Jitpack.io](https://jitpack.io/#I-Al-Istannen/JavadocBotBase) though.
+
 <br>
 Happy Javadocing!
