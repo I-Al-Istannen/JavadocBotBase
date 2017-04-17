@@ -66,7 +66,8 @@ public class ClassParser {
       sibling = sibling.nextElementSibling();
     }
 
-    return HtmlToDiscordUtil.convert(total.toString(), settings.getBaseUrl());
+    return HtmlToDiscordUtil
+        .convert(total.toString(), settings.getBaseUrl(), settings.isSilentlyIgnoreUnknownTags());
   }
 
   /**
@@ -87,7 +88,9 @@ public class ClassParser {
     // skip to "block" element
     while ((sibling = sibling.nextElementSibling()) != null) {
       if (sibling.tagName().equalsIgnoreCase("pre")) {
-        return HtmlToDiscordUtil.convert(sibling.outerHtml(), settings.getBaseUrl());
+        return HtmlToDiscordUtil.convert(
+            sibling.outerHtml(), settings.getBaseUrl(), settings.isSilentlyIgnoreUnknownTags()
+        );
       }
     }
     throw new NoSuchElementException("Couldn't find the declaration");

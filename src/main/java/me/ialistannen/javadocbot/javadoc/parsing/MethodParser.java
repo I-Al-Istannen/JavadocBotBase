@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import me.ialistannen.javadocbot.javadoc.JavadocSettings;
 import me.ialistannen.javadocbot.javadoc.model.JavadocClass;
 import me.ialistannen.javadocbot.javadoc.model.JavadocMethod;
 import me.ialistannen.javadocbot.util.HtmlToDiscordUtil;
@@ -16,6 +17,15 @@ import org.jsoup.select.Elements;
  * @author jwachter
  */
 public class MethodParser {
+
+  private JavadocSettings settings;
+
+  /**
+   * @param settings The {@link JavadocSettings} to use
+   */
+  public MethodParser(JavadocSettings settings) {
+    this.settings = settings;
+  }
 
   /**
    * Parses the whole description of a method
@@ -41,7 +51,9 @@ public class MethodParser {
     }
 
     String html = JsoupUtil.toHtml(content, Element::outerHtml);
-    return HtmlToDiscordUtil.convert(html, javadocMethod.getContainingClass().getUrl());
+    return HtmlToDiscordUtil.convert(
+        html, javadocMethod.getContainingClass().getUrl(), settings.isSilentlyIgnoreUnknownTags()
+    );
   }
 
   public List<JavadocMethod> getMethods(JavadocClass javadocClass) {
@@ -71,17 +83,24 @@ public class MethodParser {
         continue;
       }
       String returnType = HtmlToDiscordUtil.convert(
-          extractReturnType(firstColumn), javadocClass.getUrl()
+          extractReturnType(firstColumn),
+          javadocClass.getUrl(),
+          settings.isSilentlyIgnoreUnknownTags()
       );
       String url = HtmlToDiscordUtil.convert(
-          extractUrl(secondColumn), javadocClass.getUrl()
+          extractUrl(secondColumn),
+          javadocClass.getUrl(),
+          settings.isSilentlyIgnoreUnknownTags()
       );
       String declaration = HtmlToDiscordUtil.convert(
-          extractFullDeclaration(secondColumn, url), javadocClass.getUrl()
+          extractFullDeclaration(secondColumn, url),
+          javadocClass.getUrl(),
+          settings.isSilentlyIgnoreUnknownTags()
       );
       String shortDescription = HtmlToDiscordUtil.convert(
           extractShortDescription(secondColumn),
-          javadocClass.getUrl()
+          javadocClass.getUrl(),
+          settings.isSilentlyIgnoreUnknownTags()
       );
       String name = extractName(secondColumn);
 

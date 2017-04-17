@@ -24,14 +24,34 @@ public class HtmlToDiscordUtil {
   }
 
   /**
-   * Converts HTML to a more discord friendly format
+   * Converts HTML to a more discord friendly format.
+   * <p>
+   * Throws an exception if a tag is not known.
    *
    * @param html The HTML to convert
    * @param baseUrl The base url to use for resolving links
    * @return The converted String
+   * @see #convert(String, String, boolean)
+   * @deprecated Use {@link #convert(String, String, boolean)} and decide yourself.
    */
+  @Deprecated
   public static String convert(String html, String baseUrl) {
-    HtmlConverter converter = new HtmlConverter(html, instance.mapperCollection);
+    System.err.println("Ouch!");
+    return convert(html, baseUrl, false);
+  }
+
+  /**
+   * Converts HTML to a more discord friendly format
+   *
+   * @param html The HTML to convert
+   * @param baseUrl The base url to use for resolving links
+   * @param silentlyIgnoreUnknownTags Whether to silently ignore unknown tags
+   * @return The converted String
+   */
+  public static String convert(String html, String baseUrl, boolean silentlyIgnoreUnknownTags) {
+    System.out.println("Is: " + silentlyIgnoreUnknownTags);
+    HtmlConverter converter = new HtmlConverter(html, instance.mapperCollection)
+        .setSilentlyIgnoreUnknownTags(silentlyIgnoreUnknownTags);
     return converter.parse(baseUrl);
   }
 }

@@ -54,7 +54,7 @@ public class JavadocManager {
     this.settings = settings;
     packageParser = new PackageParser(this.settings);
     classParser = new ClassParser(this.settings);
-    methodParser = new MethodParser();
+    methodParser = new MethodParser(this.settings);
   }
 
   /**

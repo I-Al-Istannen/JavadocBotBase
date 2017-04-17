@@ -81,6 +81,7 @@ public class PackageParser {
     if (block == null) {
       throw new IllegalArgumentException("Couldn't find the block class for the description");
     }
-    return HtmlToDiscordUtil.convert(block.html(), settings.getBaseUrl());
+    return HtmlToDiscordUtil
+        .convert(block.html(), settings.getBaseUrl(), settings.isSilentlyIgnoreUnknownTags());
   }
 }

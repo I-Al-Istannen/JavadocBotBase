@@ -6,7 +6,7 @@
 
   <groupId>me.ialistannen</groupId>
   <artifactId>JavadocBot</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.github.I-Al-Istannen</groupId>
       <artifactId>ConvertHTMLToDiscord</artifactId>
-      <version>1608978989</version>
+      <version>d460d47</version>
     </dependency>
 
 
