@@ -1,8 +1,6 @@
 package me.ialistannen.javadocbot.util;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -32,7 +30,7 @@ public class JsoupUtil {
    */
   public static Document parseUrl(String url) {
     try {
-      return Jsoup.connect(getUrl(url)).userAgent("Mozilla/5.0").timeout(10000).get();
+      return Jsoup.connect(url).userAgent("Mozilla/5.0").timeout(10000).get();
     } catch (IOException e) {
       LOGGER.warn("Couldn't connect to url", e);
       throw new RuntimeException("Error while connecting", e);
@@ -80,14 +78,4 @@ public class JsoupUtil {
     return elements.stream().map(toStringFunction)
         .collect(Collectors.joining());
   }
-
-  private static URL getUrl(String stringUrl) {
-    try {
-      return new URL(stringUrl);
-    } catch (MalformedURLException e) {
-      LOGGER.warn("Not a valid url", e);
-      throw new RuntimeException("Not a valid url", e);
-    }
-  }
-
 }
