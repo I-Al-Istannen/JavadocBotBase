@@ -90,6 +90,12 @@ javadocPackage.getUrl(); // 'https://docs.oracle.com/javase/8/docs/api/java/util
 javadocPackage.getClasses(); // '[Long list]'
 ```
 
+### Conversion of HTML to Markdown
+This library uses [ConvertHTMLToDiscord](https://github.com/I-Al-Istannen/ConvertHTMLToDiscord) to convert the HTML code to discords markdown.  
+This program has the option to silently ignore unknown HTML tags or to throw an exception.  
+You can control that behaviour by using `JavadocSettings#setSilentlyIgnoreUnknownTags(boolean)`.
+
+
 ### Maven
 It is currently not in the maven central repo or JCenter.  
 You can obtain it using [Jitpack.io](https://jitpack.io/#I-Al-Istannen/JavadocBotBase) though.
