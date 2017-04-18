@@ -36,7 +36,6 @@ public class HtmlToDiscordUtil {
    */
   @Deprecated
   public static String convert(String html, String baseUrl) {
-    System.err.println("Ouch!");
     return convert(html, baseUrl, false);
   }
 
@@ -49,7 +48,6 @@ public class HtmlToDiscordUtil {
    * @return The converted String
    */
   public static String convert(String html, String baseUrl, boolean silentlyIgnoreUnknownTags) {
-    System.out.println("Is: " + silentlyIgnoreUnknownTags);
     HtmlConverter converter = new HtmlConverter(html, instance.mapperCollection)
         .setSilentlyIgnoreUnknownTags(silentlyIgnoreUnknownTags);
     return converter.parse(baseUrl);
