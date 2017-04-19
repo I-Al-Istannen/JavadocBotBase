@@ -40,11 +40,11 @@ There are different ways to actually get your information now.
 ##### Getting a class:
 ```java
 String className = "String";
-Collection<JavadocClass> classes = manager.getClass(className);
+List<JavadocClass> classes = manager.getClassesExact(className);
 if (classes.isEmpty()) {
 // No classes found!
 }
-JavadocClass javadocClass = classes.iterator().next();
+JavadocClass javadocClass = classes.get(0);
 javadocClass.getName(); // 'String'
 javadocClass.getNameWithModifiers(); // 'public final class String'
 javadocClass.getUrl(); // 'https://docs.oracle.com/javase/8/docs/api/java/lang/String.html'
@@ -56,11 +56,11 @@ javadocClass.getDeclaration(); // getNameWithModifiers() + getExtendsImplemement
 ##### Getting a method
 
 ```java
-Collection<JavadocClass> methodClasses = manager.getClassEndingIn("String");
+List<JavadocClass> methodClasses = manager.getClassEndingIn("String");
 if (methodClasses.isEmpty()) {
 // Error, class not found
 }
-JavadocClass methodClass = methodClasses.iterator().next();
+JavadocClass methodClass = methodClasses.get(0);
 Optional<JavadocMethod> methodOptional = GlobalConstants.manager.getMethod(methodClass, "toLowerCase");
 if (!methodOptional.isPresent()) {
 // Error, method not found
