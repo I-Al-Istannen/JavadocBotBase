@@ -61,11 +61,13 @@ if (methodClasses.isEmpty()) {
 // Error, class not found
 }
 JavadocClass methodClass = methodClasses.get(0);
-Optional<JavadocMethod> methodOptional = GlobalConstants.manager.getMethod(methodClass, "toLowerCase");
+List<JavadocMethod> methods = GlobalConstants.manager.getMethodsWithNameAndParam(methodClass, "toLowerCase");
+// getMethodsWithName replaces parameters in the notation "(paramClassOne,paramClassTwo)" and ignores them.
+// getMethodsWithNameAndParam respects them and tries to find an exact match.
 if (!methodOptional.isPresent()) {
 // Error, method not found
 }
-JavadocMethod method = methodOptional.get();
+JavadocMethod method = methods.get();
 method.getName(); // 'toLowerCase'
 method.getDescription(); // 'Converts all of the characters in this `String` to lower case...'
 method.getDeclaration(); // 'public [String](link)  toLowerCase()' (Omitted link)
