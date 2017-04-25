@@ -132,17 +132,40 @@ public class JavadocManager {
   }
 
   /**
+   * Returns all methods with the given name and parameters.
+   *
    * @param javadocClass The class to get it for
-   * @param name The name of the method
+   * @param name The name of the method. Can contain parameters in the `(paramClass)` notation
    * @return The first {@link JavadocMethod} if found
    */
-  public Optional<JavadocMethod> getMethod(JavadocClass javadocClass, String name) {
+  public List<JavadocMethod> getMethodsWithNameAndParam(JavadocClass javadocClass, String name) {
     Collection<String> parameters = getParameters(name);
     String methodName = name.replaceAll("\\(.+\\)", "");
-    return methodParser.getMethods(javadocClass).stream()
+    List<JavadocMethod> methodsWithName = getAllMethods(javadocClass).stream()
         .filter(javadocMethod -> javadocMethod.getName().equals(methodName))
+        .collect(Collectors.toList());
+
+    Optional<JavadocMethod> exactMatch = findExactMatch(methodsWithName, parameters);
+
+    return exactMatch.map(Arrays::asList).orElse(methodsWithName);
+  }
+
+  private Optional<JavadocMethod> findExactMatch(Collection<JavadocMethod> methods,
+      Collection<String> parameters) {
+    return methods.stream()
         .filter(javadocMethod -> hasMatchingParameters(parameters, javadocMethod))
         .findAny();
+  }
+
+  /**
+   * Returns all methods with the given name and parameters.
+   *
+   * @param javadocClass The class to get it for
+   * @param name The name of the method. Can contain parameters in the `(paramClass)` notation
+   * @return The first {@link JavadocMethod} if found
+   */
+  public List<JavadocMethod> getMethodsWithName(JavadocClass javadocClass, String name) {
+    return getMethodsWithNameAndParam(javadocClass, name.replaceAll("\\(.+\\)", ""));
   }
 
   /**
@@ -172,7 +195,9 @@ public class JavadocManager {
     }
     String parameters = methodName.substring(methodName.indexOf("(") + 1);
     parameters = parameters.replace(")", "");
-    return Arrays.asList(parameters.split(" "));
+    return Arrays.stream(parameters.split(","))
+        .map(String::trim)
+        .collect(Collectors.toList());
   }
 
   /**
