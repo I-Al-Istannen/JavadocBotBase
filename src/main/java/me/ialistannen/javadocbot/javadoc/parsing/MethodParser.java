@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import me.ialistannen.javadocbot.javadoc.JavadocManager;
 import me.ialistannen.javadocbot.javadoc.JavadocSettings;
 import me.ialistannen.javadocbot.javadoc.model.JavadocClass;
 import me.ialistannen.javadocbot.javadoc.model.JavadocMethod;
@@ -19,12 +23,15 @@ import org.jsoup.select.Elements;
 public class MethodParser {
 
   private JavadocSettings settings;
+  private JavadocManager javadocManager;
 
   /**
    * @param settings The {@link JavadocSettings} to use
+   * @param javadocManager The {@link JavadocManager} to use
    */
-  public MethodParser(JavadocSettings settings) {
+  public MethodParser(JavadocSettings settings, JavadocManager javadocManager) {
     this.settings = settings;
+    this.javadocManager = javadocManager;
   }
 
   /**
@@ -58,19 +65,31 @@ public class MethodParser {
 
   public List<JavadocMethod> getMethods(JavadocClass javadocClass) {
     Document document = JsoupUtil.parseUrl(javadocClass.getUrl());
+
+    List<JavadocMethod> methods = new ArrayList<>();
+
+    methods.addAll(getMethodsNoInherited(javadocClass, document, false));
+    methods.addAll(getAllInheritedMethodsRecurse(document));
+
+    return methods;
+  }
+
+  private List<JavadocMethod> getMethodsNoInherited(JavadocClass javadocClass, Document document,
+      boolean inherited) {
     Elements anchors = document.getElementsByAttributeValue("name", "method.summary");
     if (anchors.isEmpty()) {
       throw new IllegalArgumentException("Couldn't find anchor");
     }
-    Element table = JsoupUtil
-        .findFirstMatching(element -> element.tagName().equalsIgnoreCase("table"), anchors.get(0));
+    Element table = JsoupUtil.findFirstMatching(
+        element -> element.tagName().equalsIgnoreCase("table"),
+        anchors.get(0)
+    );
 
     if (table == null) {
       throw new NoSuchElementException("Couldn't find table");
     }
 
     List<JavadocMethod> methods = new ArrayList<>();
-
     for (Element row : table.getElementsByTag("tr")) {
       Element firstColumn = ensureExists(
           row.getElementsByClass("colFirst").get(0), "colFirst"
@@ -107,14 +126,15 @@ public class MethodParser {
       JavadocMethod method = new JavadocMethod(
           name, url,
           returnType, declaration, shortDescription,
-          javadocClass, this
+          javadocClass, this,
+          inherited
       );
 
       methods.add(method);
     }
-
     return methods;
   }
+
 
   /**
    * @param firstColumn The <em>first</em> column in the table
@@ -188,5 +208,64 @@ public class MethodParser {
       throw new NoSuchElementException(name + " was not found");
     }
     return value;
+  }
+
+  private List<JavadocMethod> getAllInheritedMethodsRecurse(Document document) {
+    List<JavadocClass> superClasses = getSuperclassAndInterfaceNames(document)
+        .map(element -> javadocManager.getClassEndingIn(element))
+        .flatMap(Collection::stream)
+        .collect(Collectors.toList());
+
+    List<JavadocMethod> methods = new ArrayList<>(superClasses.size());
+
+    for (JavadocClass javadocClass : superClasses) {
+      Document superClassDocument = JsoupUtil.parseUrl(javadocClass.getUrl());
+      List<JavadocMethod> inheritedMethods = getMethodsNoInherited(
+          javadocClass,
+          superClassDocument,
+          true
+      );
+      Set<String> inheritedMethodNames = getInheritedMethodNames(document).stream()
+          .map(Element::text)
+          .collect(Collectors.toSet());
+
+      methods.addAll(
+          inheritedMethods.stream()
+              .filter(method -> inheritedMethodNames.contains(method.getName()))
+              .collect(Collectors.toList())
+      );
+    }
+
+    return methods;
+  }
+
+  /**
+   * Returns all classes this class inherits methods from.
+   *
+   * @param document The {@link Document} to get it from
+   * @return A Stream with the names of all implemented Interfaces and an eventual superclass.
+   */
+  private Stream<String> getSuperclassAndInterfaceNames(Document document) {
+    return document.getElementsByAttribute("name").stream()
+        .map(element -> element.attr("name"))
+        .filter(element -> element.startsWith("methods.inherited.from.class"))
+        .map(element -> element.replace("methods.inherited.from.class.", ""));
+  }
+
+  /**
+   * Returns the names of all inherited methods.
+   *
+   * @param document The {@link Document} to get it from
+   * @return The names of all inherited methods
+   */
+  private List<Element> getInheritedMethodNames(Document document) {
+    return document.getElementsByAttribute("name").stream()
+        .filter(element -> element.attr("name").startsWith("methods.inherited.from.class"))
+        .map(Element::siblingElements)
+        .flatMap(Collection::stream)
+        .filter(element -> element.tagName().equalsIgnoreCase("code"))
+        .flatMap(element -> element.getElementsByTag("a").stream())
+        .filter(element -> element.hasAttr("href"))
+        .collect(Collectors.toList());
   }
 }

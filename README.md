@@ -61,7 +61,7 @@ if (methodClasses.isEmpty()) {
 // Error, class not found
 }
 JavadocClass methodClass = methodClasses.get(0);
-List<JavadocMethod> methods = GlobalConstants.manager.getMethodsWithNameAndParam(methodClass, "toLowerCase");
+List<JavadocMethod> methods = manager.getMethodsWithNameAndParam(methodClass, "toLowerCase");
 // getMethodsWithName replaces parameters in the notation "(paramClassOne,paramClassTwo)" and ignores them.
 // getMethodsWithNameAndParam respects them and tries to find an exact match.
 if (!methodOptional.isPresent()) {

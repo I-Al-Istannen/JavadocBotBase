@@ -24,6 +24,8 @@ public class JavadocMethod extends JavadocElement {
   private String declaration;
   private String shortDescription;
 
+  private boolean inherited;
+
   /**
    * @param name The name of the element
    * @param url The URL to the element
@@ -31,10 +33,11 @@ public class JavadocMethod extends JavadocElement {
    * @param declaration The declaration of the method
    * @param shortDescription A short description of the method
    * @param methodParser The {@link MethodParser}
+   * @param inherited Whether the method is inherited.
    */
   public JavadocMethod(String name, String url,
       String returnValue, String declaration, String shortDescription,
-      JavadocClass containingClass, MethodParser methodParser) {
+      JavadocClass containingClass, MethodParser methodParser, boolean inherited) {
     super(name, null, url);
     this.methodParser = Objects.requireNonNull(methodParser, "methodParser can not be null!");
     this.declaration = Objects.requireNonNull(declaration, "declaration can not be null!");
@@ -43,6 +46,7 @@ public class JavadocMethod extends JavadocElement {
         .requireNonNull(shortDescription, "shortDescription can not be null!");
     this.containingClass = Objects
         .requireNonNull(containingClass, "containingClass can not be null!");
+    this.inherited = inherited;
   }
 
   @SuppressWarnings("Duplicates")
@@ -67,8 +71,8 @@ public class JavadocMethod extends JavadocElement {
    * <br>As always it <em>will</em> already be markdown formatted. This is important, as links will
    * look different.
    *
-   * <p>
-   * This method will <em>not</em> cause an additional web request.
+   * <p>This method will <em>not</em> cause an additional web request, if {@link #isInherited()} is
+   * false.
    *
    * @return The declaration of the method
    */
@@ -80,8 +84,8 @@ public class JavadocMethod extends JavadocElement {
    * Returns the name of the method with the parameters (type and name).
    * <p>It has the following format: "{@code scalb(float f, int scaleFactor)}"
    *
-   * <p>
-   * This method will <em>not</em> cause an additional web request.
+   * <p>This method will <em>not</em> cause an additional web request, if {@link #isInherited()} is
+   * false.
    *
    * @return The name of the method with parameters.
    */
@@ -94,8 +98,9 @@ public class JavadocMethod extends JavadocElement {
 
   /**
    * Returns the return value of the method.
-   * <p>
-   * This method will <em>not</em> cause an additional web request.
+   *
+   * <p>This method will <em>not</em> cause an additional web request, if {@link #isInherited()} is
+   * false.
    *
    * @return The return value
    */
@@ -105,8 +110,9 @@ public class JavadocMethod extends JavadocElement {
 
   /**
    * Returns the (typically) first line of the javadoc of the method
-   * <p>
-   * This method will <em>not</em> cause an additional web request.
+   *
+   * <p>This method will <em>not</em> cause an additional web request, if {@link #isInherited()} is
+   * false.
    *
    * @return A short description of the method, if any
    */
@@ -149,14 +155,11 @@ public class JavadocMethod extends JavadocElement {
   }
 
   /**
-   * Returns the parameters of the method
-   * <p>
-   * Format:
-   * <br><em>Key:</em> Type
-   * <br><em>Value:</em> Name
+   * Returns the parameters of the method <p> Format: <br><em>Key:</em> Type <br><em>Value:</em>
+   * Name
    *
-   * <p>
-   * This method will <em>not</em> cause an additional web request.
+   * <p>This method will <em>not</em> cause an additional web request, if {@link #isInherited()} is
+   * false.
    *
    * @return The method parameters. Empty if none
    */
@@ -183,6 +186,16 @@ public class JavadocMethod extends JavadocElement {
     }
 
     return parameters;
+  }
+
+  /**
+   * Checks if a method is inherited.
+   * <p></p>Getting the short description or parameters for one involves a blocking web request.
+   *
+   * @return True if the method is inherited.
+   */
+  public boolean isInherited() {
+    return inherited;
   }
 
   @Override
