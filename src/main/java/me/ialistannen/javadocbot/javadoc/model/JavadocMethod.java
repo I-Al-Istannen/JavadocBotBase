@@ -32,6 +32,7 @@ public class JavadocMethod extends JavadocElement {
    * @param returnValue The return value of the Method
    * @param declaration The declaration of the method
    * @param shortDescription A short description of the method
+   * @param containingClass The {@link JavadocClass} this method is contained inside.
    * @param methodParser The {@link MethodParser}
    * @param inherited Whether the method is inherited.
    */
@@ -89,6 +90,7 @@ public class JavadocMethod extends JavadocElement {
    *
    * @return The name of the method with parameters.
    */
+  @SuppressWarnings("unused")
   public String getNameWithParameters() {
     String parameters = getParameters().stream()
         .map(entry -> entry.getKey() + " " + entry.getValue())
@@ -104,6 +106,7 @@ public class JavadocMethod extends JavadocElement {
    *
    * @return The return value
    */
+  @SuppressWarnings("unused")
   public String getReturnValue() {
     return returnValue;
   }
@@ -116,6 +119,7 @@ public class JavadocMethod extends JavadocElement {
    *
    * @return A short description of the method, if any
    */
+  @SuppressWarnings("unused")
   public String getShortDescription() {
     return shortDescription;
   }
@@ -134,6 +138,7 @@ public class JavadocMethod extends JavadocElement {
   /**
    * @return The declaration without the throws modifier
    */
+  @SuppressWarnings("unused")
   public String getDeclarationWithoutExceptions() {
     return getDeclaration().replaceAll(" ?throws.+", "");
   }
@@ -141,6 +146,7 @@ public class JavadocMethod extends JavadocElement {
   /**
    * @return The <em>checked</em> exceptions it may throw (declared using {@code throws})
    */
+  @SuppressWarnings("unused")
   public String getExceptions() {
     Matcher matcher = Pattern.compile(
         "( ?throws .+)",
@@ -190,10 +196,11 @@ public class JavadocMethod extends JavadocElement {
 
   /**
    * Checks if a method is inherited.
-   * <p></p>Getting the short description or parameters for one involves a blocking web request.
+   * <p>Getting the short description or parameters for one involves a blocking web request.
    *
    * @return True if the method is inherited.
    */
+  @SuppressWarnings({"WeakerAccess", "unused"})
   public boolean isInherited() {
     return inherited;
   }

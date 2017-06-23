@@ -6,9 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import javax.annotation.Nonnull;
 
 /**
- * A list of Javadoc class name
+ * A list of Javadoc class names.
  *
  * @author jwachter
  */
@@ -24,7 +25,7 @@ public class ClassNameCollection implements Iterable<Entry<String, Collection<St
   }
 
   /**
-   * @param links The map with Name -> Link
+   * @param links The map with Name {@code ->} Link
    */
   public ClassNameCollection(Multimap<String, String> links) {
     this.links = HashMultimap.create(links);
@@ -58,6 +59,7 @@ public class ClassNameCollection implements Iterable<Entry<String, Collection<St
   }
 
   @Override
+  @Nonnull
   public Iterator<Entry<String, Collection<String>>> iterator() {
     return links.asMap().entrySet().iterator();
   }

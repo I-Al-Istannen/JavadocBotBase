@@ -13,6 +13,7 @@
   </properties>
 
   <build>
+    <defaultGoal>clean package</defaultGoal>
     <plugins>
 
       <!--Compiler-->
@@ -35,8 +36,25 @@
           <execution>
             <id>attach-javadoc</id>
             <goals>
-              <goal>javadoc</goal>
+              <goal>jar</goal>
             </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--source-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>package</phase>
           </execution>
         </executions>
       </plugin>

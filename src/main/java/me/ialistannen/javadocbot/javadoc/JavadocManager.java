@@ -60,6 +60,7 @@ public class JavadocManager {
   /**
    * Indexes all classes
    */
+  @SuppressWarnings("unused")
   public void index() {
     AllClassParser allClassParser = new AllClassParser();
     ClassNameCollection allClasses = allClassParser.parse(settings.getBaseUrl());

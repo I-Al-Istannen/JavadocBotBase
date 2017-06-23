@@ -28,6 +28,7 @@ public class JavadocSettings {
 
   /**
    * @param baseUrl The new base url for javadoc lookup
+   * @return This instance
    */
   public JavadocSettings setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;

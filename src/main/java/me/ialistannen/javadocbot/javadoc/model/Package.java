@@ -19,6 +19,7 @@ public class Package extends JavadocElement {
   /**
    * @param name The name of the element
    * @param url The URL of the package
+   * @param packageParser The {@link PackageParser} to use.
    */
   public Package(String name, String url, PackageParser packageParser) {
     super(name, null, url);
@@ -31,13 +32,14 @@ public class Package extends JavadocElement {
    *
    * @param javadocClass The {@link JavadocClass} to add
    */
-  public void addClass(JavadocClass javadocClass) {
+  void addClass(JavadocClass javadocClass) {
     classes.add(javadocClass);
   }
 
   /**
    * @return All the classes in this package
    */
+  @SuppressWarnings("unused")
   public Collection<JavadocClass> getClasses() {
     return Collections.unmodifiableCollection(classes);
   }
