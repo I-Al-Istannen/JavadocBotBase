@@ -1,6 +1,5 @@
 package me.ialistannen.javadocbot.util;
 
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,10 +8,11 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
-  private static final Pattern BOLD = Pattern.compile("\\*\\*(.+)\\*\\*");      // **xXx**
-  private static final Pattern ITALIC_ASTERISK = Pattern.compile("\\*(.+)\\*"); // *xXx*
-  private static final Pattern UNDERLINE = Pattern.compile("___(.+)___");       // ___xXx___
-  private static final Pattern ITALIC_UNDERSCORE = Pattern.compile("_(.+)_");   // _xXx_
+  private static final Pattern BOLD = Pattern.compile("\\*\\*(.+?)\\*\\*");       // **xXx**
+  private static final Pattern ITALIC_ASTERISK = Pattern.compile("\\*(.+?)\\*");  // *xXx*
+  private static final Pattern UNDERLINE = Pattern.compile("__(.+?)__");          // __xXx__
+  private static final Pattern ITALIC_UNDERSCORE = Pattern.compile("_(.+?)_");    // _xXx_
+  private static final Pattern INLINE_CODE = Pattern.compile("`(.+?)`");          // `xXx`
 
   /**
    * Matches Markdown links in the
@@ -28,7 +28,7 @@ public class StringUtil {
   public static String stripFormatting(String string) {
     String replaced = replaceBasic(string);
 
-    return replaceAllOccurrences(LINK_PATTERN, replaced, matcher -> matcher.group(1));
+    return replaceAllOccurrencesWithFirstGroup(LINK_PATTERN, replaced);
   }
 
   /**
@@ -39,22 +39,16 @@ public class StringUtil {
    */
   private static String replaceBasic(String string) {
     // Order is important
-    String replaced = replaceAllOccurrences(BOLD, string, matcher -> matcher.group(1));
-    replaced = replaceAllOccurrences(ITALIC_ASTERISK, replaced, matcher -> matcher.group(1));
-    replaced = replaceAllOccurrences(UNDERLINE, replaced, matcher -> matcher.group(1));
-    replaced = replaceAllOccurrences(ITALIC_UNDERSCORE, replaced, matcher -> matcher.group(1));
+    String replaced = replaceAllOccurrencesWithFirstGroup(BOLD, string);
+    replaced = replaceAllOccurrencesWithFirstGroup(ITALIC_ASTERISK, replaced);
+    replaced = replaceAllOccurrencesWithFirstGroup(UNDERLINE, replaced);
+    replaced = replaceAllOccurrencesWithFirstGroup(ITALIC_UNDERSCORE, replaced);
+    replaced = replaceAllOccurrencesWithFirstGroup(INLINE_CODE, replaced);
     return replaced;
   }
 
-  private static String replaceAllOccurrences(Pattern pattern, String string,
-      Function<Matcher, String> replacement) {
+  private static String replaceAllOccurrencesWithFirstGroup(Pattern pattern, String string) {
     Matcher matcher = pattern.matcher(string);
-    String replaced = string;
-    while (matcher.find()) {
-      replaced = matcher.replaceAll(replacement.apply(matcher));
-      matcher = pattern.matcher(replaced);
-    }
-
-    return replaced;
+    return matcher.replaceAll("$1");
   }
 }
