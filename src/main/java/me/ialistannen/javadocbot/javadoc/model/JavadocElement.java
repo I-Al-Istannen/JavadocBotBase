@@ -4,8 +4,6 @@ import java.util.Objects;
 
 /**
  * A Javadoc Element
- *
- * @author jwachter
  */
 public abstract class JavadocElement {
 
@@ -18,7 +16,7 @@ public abstract class JavadocElement {
    * @param description The description of the element
    * @param url The URL to the element
    */
-  public JavadocElement(String name, String description, String url) {
+  JavadocElement(String name, String description, String url) {
     this.name = name;
     this.description = description;
     this.url = url;
@@ -55,7 +53,7 @@ public abstract class JavadocElement {
   /**
    * @param description The new description
    */
-  protected void setDescription(String description) {
+  void setDescription(String description) {
     this.description = description;
   }
 

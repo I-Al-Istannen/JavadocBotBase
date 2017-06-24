@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A util class for dealing with {@link org.jsoup.Jsoup}
- *
- * @author jwachter
  */
 public class JsoupUtil {
 

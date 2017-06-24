@@ -5,9 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import me.ialistannen.javadocbot.javadoc.parsing.ClassParser;
 
-/**
- * @author jwachter
- */
 public class JavadocClass extends JavadocElement {
 
   private ClassParser classParser;
@@ -51,6 +48,7 @@ public class JavadocClass extends JavadocElement {
    *
    * @return The class declaration
    */
+  @SuppressWarnings("WeakerAccess")
   public String getDeclaration() {
     synchronized (this) {
       if (declaration != null) {
@@ -77,6 +75,7 @@ public class JavadocClass extends JavadocElement {
    *
    * @return The name with the modifiers, but not extends, implements and stuff
    */
+  @SuppressWarnings("unused")
   public String getNameWithModifiers() {
     return getDeclaration().replaceAll(" ?(extends|implements).+", "");
   }
@@ -88,6 +87,7 @@ public class JavadocClass extends JavadocElement {
    *
    * @return The "extends, implements and stuff" clause after a class name
    */
+  @SuppressWarnings("unused")
   public String getExtendsImplements() {
     Matcher matcher = Pattern.compile(" ?(extends|implements)([\\s\\S]+)")
         .matcher(getDeclaration());
@@ -112,6 +112,7 @@ public class JavadocClass extends JavadocElement {
    * @return The type of the class
    */
   //@formatter:on
+  @SuppressWarnings("unused")
   public String getType() {
     String declaration = getDeclaration().toLowerCase();
     if (declaration.contains("interface")) {

@@ -12,8 +12,6 @@ import org.jsoup.select.Elements;
 
 /**
  * A parser for the package
- *
- * @author jwachter
  */
 public class PackageParser {
 
@@ -21,7 +19,6 @@ public class PackageParser {
       "(.+)(?=/)",
       Pattern.CASE_INSENSITIVE
   );
-  private static final String PACKAGE_APPENDIX = "/package-summary.html";
 
   private JavadocSettings settings;
 
@@ -30,20 +27,6 @@ public class PackageParser {
    */
   public PackageParser(JavadocSettings settings) {
     this.settings = settings;
-  }
-
-  /**
-   * @param fullLink The full link to the package
-   * @return The parsed element
-   * @throws IllegalArgumentException if no package name could be extracted
-   */
-  public Package parse(String fullLink) {
-    String name = getNameFromLink(fullLink);
-    return new Package(
-        name,
-        settings.getBaseUrl() + name.replace(".", "/") + PACKAGE_APPENDIX,
-        this
-    );
   }
 
   /**
@@ -66,18 +49,19 @@ public class PackageParser {
    * Parses the package description
    *
    * @param javadocPackage The package to get it for
-   * @return The Description for the package as a discord markdown string
+   * @return The Description for the package as a discord markdown string. An empty string if it has
+   * no description.
    */
   public String parseDescription(Package javadocPackage) {
     Document document = JsoupUtil.parseUrl(javadocPackage.getUrl());
 
     Elements nameAnchor = document.getElementsByAttributeValue("name", "package.description");
     if (nameAnchor.isEmpty()) {
-      throw new IllegalArgumentException("Couldn't find the name anchor");
+      return "";
     }
 
-    Element anchir = nameAnchor.get(0);
-    Element block = JsoupUtil.findFirstMatching(element -> element.hasClass("block"), anchir);
+    Element anchor = nameAnchor.get(0);
+    Element block = JsoupUtil.findFirstMatching(element -> element.hasClass("block"), anchor);
     if (block == null) {
       throw new IllegalArgumentException("Couldn't find the block class for the description");
     }

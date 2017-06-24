@@ -8,21 +8,22 @@ import me.ialistannen.javadocbot.javadoc.parsing.PackageParser;
 
 /**
  * A Javadoc Package
- *
- * @author jwachter
  */
 public class Package extends JavadocElement {
 
   private PackageParser packageParser;
+  private String shortDescription;
   private Collection<JavadocClass> classes;
 
   /**
-   * @param name The name of the element
-   * @param url The URL of the package
+   * @param name The name of the element.
+   * @param url The URL of the package.
+   * @param shortDescription A short description of the package or an empty String.
    * @param packageParser The {@link PackageParser} to use.
    */
-  public Package(String name, String url, PackageParser packageParser) {
+  public Package(String name, String url, String shortDescription, PackageParser packageParser) {
     super(name, null, url);
+    this.shortDescription = shortDescription;
     this.packageParser = Objects.requireNonNull(packageParser, "packageParser can not be null!");
     classes = new HashSet<>();
   }
@@ -45,7 +46,7 @@ public class Package extends JavadocElement {
   }
 
   /**
-   * May involve a blocking web request
+   * May involve a blocking web request.
    *
    * @return The description of this package
    */
@@ -63,11 +64,24 @@ public class Package extends JavadocElement {
     }
   }
 
+  /**
+   * Returns a short description of the package.
+   *
+   * <em>Will not involve and additional web request.</em>
+   *
+   * @return A short description for the package.
+   */
+  @SuppressWarnings({"unused", "WeakerAccess"})
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
   @Override
   public String toString() {
     return "Package{" +
         "classes=" + classes +
         ", name='" + getName() + '\'' +
+        ", shortDescription='" + getShortDescription() + '\'' +
         ", description='" + getDescription() + '\'' +
         ", url='" + getUrl() + '\'' +
         "} ";

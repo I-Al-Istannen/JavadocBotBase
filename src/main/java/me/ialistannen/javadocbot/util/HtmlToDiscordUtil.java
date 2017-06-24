@@ -6,8 +6,6 @@ import me.ialistannen.htmltodiscord.StandardMappers;
 
 /**
  * A util for converting HTML to discord
- *
- * @author jwachter
  */
 public class HtmlToDiscordUtil {
 

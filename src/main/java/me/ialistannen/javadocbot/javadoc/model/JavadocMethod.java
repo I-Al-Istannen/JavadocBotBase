@@ -12,8 +12,6 @@ import me.ialistannen.javadocbot.util.StringUtil;
 
 /**
  * A Javadoc method
- *
- * @author jwachter
  */
 public class JavadocMethod extends JavadocElement {
 
@@ -77,6 +75,7 @@ public class JavadocMethod extends JavadocElement {
    *
    * @return The declaration of the method
    */
+  @SuppressWarnings("WeakerAccess")
   public String getDeclaration() {
     return declaration;
   }

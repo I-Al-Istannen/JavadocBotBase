@@ -2,8 +2,6 @@ package me.ialistannen.javadocbot.util;
 
 /**
  * A small pair implementation
- *
- * @author jwachter
  */
 public class Pair<K, V> {
 

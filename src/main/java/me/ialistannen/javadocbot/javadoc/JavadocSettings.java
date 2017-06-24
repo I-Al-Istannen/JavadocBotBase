@@ -2,8 +2,6 @@ package me.ialistannen.javadocbot.javadoc;
 
 /**
  * Contains Javadoc settings
- *
- * @author jwachter
  */
 public class JavadocSettings {
 
@@ -30,6 +28,7 @@ public class JavadocSettings {
    * @param baseUrl The new base url for javadoc lookup
    * @return This instance
    */
+  @SuppressWarnings("unused")
   public JavadocSettings setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
     return this;
@@ -41,6 +40,7 @@ public class JavadocSettings {
    * @param ignore Whether to silently ignore unknown tags
    * @return This {@link JavadocSettings}
    */
+  @SuppressWarnings("unused")
   public JavadocSettings setSilentlyIgnoreUnknownTags(boolean ignore) {
     this.silentlyIgnoreUnknownTags = ignore;
 

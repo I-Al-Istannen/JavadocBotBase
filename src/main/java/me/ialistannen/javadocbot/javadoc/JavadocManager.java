@@ -17,6 +17,7 @@ import me.ialistannen.javadocbot.javadoc.model.JavadocClass;
 import me.ialistannen.javadocbot.javadoc.model.JavadocMethod;
 import me.ialistannen.javadocbot.javadoc.model.Package;
 import me.ialistannen.javadocbot.javadoc.parsing.AllClassParser;
+import me.ialistannen.javadocbot.javadoc.parsing.AllPackageParser;
 import me.ialistannen.javadocbot.javadoc.parsing.ClassParser;
 import me.ialistannen.javadocbot.javadoc.parsing.MethodParser;
 import me.ialistannen.javadocbot.javadoc.parsing.PackageParser;
@@ -26,8 +27,6 @@ import me.ialistannen.javadocbot.util.Pair;
 
 /**
  * Manages the retrieval of Javadoc
- *
- * @author jwachter
  */
 public class JavadocManager {
 
@@ -63,13 +62,11 @@ public class JavadocManager {
   @SuppressWarnings({"unused", "WeakerAccess"})
   public void index() {
     AllClassParser allClassParser = new AllClassParser();
+    AllPackageParser allPackageParser = new AllPackageParser(packageParser);
     ClassNameCollection allClasses = allClassParser.parse(settings.getBaseUrl());
 
-    for (Entry<String, Collection<String>> entry : allClasses) {
-      for (String classUrl : entry.getValue()) {
-        Package aPackage = packageParser.parse(classUrl);
-        packageMap.put(aPackage.getName(), aPackage);
-      }
+    for (Package aPackage : allPackageParser.parse(settings.getBaseUrl())) {
+      packageMap.put(aPackage.getName(), aPackage);
     }
 
     for (Entry<String, Collection<String>> entry : allClasses) {

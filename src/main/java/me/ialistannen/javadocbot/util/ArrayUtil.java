@@ -2,13 +2,10 @@ package me.ialistannen.javadocbot.util;
 
 import java.util.NoSuchElementException;
 
-/**
- * @author jwachter
- */
 public class ArrayUtil {
 
   /**
-   * Returns the last entry in an arrayreturn null;
+   * Returns the last entry in an array.
    *
    * @param array The array to get the last element for
    * @param <T> The type of the array

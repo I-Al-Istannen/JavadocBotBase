@@ -8,17 +8,12 @@ import me.ialistannen.javadocbot.util.LinkUtil;
 import me.ialistannen.javadocbot.util.Pair;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Parses the {@code all-classes} page in order to build an index
- *
- * @author jwachter
  */
 public class AllClassParser {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AllClassParser.class);
   private static final String APPENDIX = "/allclasses-noframe.html";
 
   /**
