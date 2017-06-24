@@ -60,7 +60,7 @@ public class JavadocManager {
   /**
    * Indexes all classes
    */
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "WeakerAccess"})
   public void index() {
     AllClassParser allClassParser = new AllClassParser();
     ClassNameCollection allClasses = allClassParser.parse(settings.getBaseUrl());
@@ -90,6 +90,7 @@ public class JavadocManager {
    * @param name The name of the class
    * @return The classes, if any
    */
+  @SuppressWarnings("unused")
   public List<JavadocClass> getClassesExact(String name) {
     return new ArrayList<>(classMap.get(name));
   }
@@ -118,6 +119,7 @@ public class JavadocManager {
    *
    * @return All classes in the Javadoc
    */
+  @SuppressWarnings("WeakerAccess")
   public List<JavadocClass> getAllClasses() {
     return new ArrayList<>(classMap.values());
   }
@@ -128,8 +130,19 @@ public class JavadocManager {
    * @param name The name of the package. Fully qualified, case sensitive.
    * @return The package, if any
    */
+  @SuppressWarnings("unused")
   public Optional<Package> getPackage(String name) {
     return Optional.ofNullable(packageMap.get(name));
+  }
+
+  /**
+   * Returns all packages.
+   *
+   * @return All packages. A shallow clone of the real collection.
+   */
+  @SuppressWarnings("unused")
+  public List<Package> getAllPackages() {
+    return new ArrayList<>(packageMap.values());
   }
 
   /**
@@ -139,6 +152,7 @@ public class JavadocManager {
    * @param name The name of the method. Can contain parameters in the `(paramClass)` notation
    * @return The first {@link JavadocMethod} if found
    */
+  @SuppressWarnings("WeakerAccess")
   public List<JavadocMethod> getMethodsWithNameAndParam(JavadocClass javadocClass, String name) {
     Collection<String> parameters = getParameters(name);
     String methodName = name.replaceAll("\\(.+\\)", "");
@@ -165,6 +179,7 @@ public class JavadocManager {
    * @param name The name of the method. Can contain parameters in the `(paramClass)` notation
    * @return The first {@link JavadocMethod} if found
    */
+  @SuppressWarnings("unused")
   public List<JavadocMethod> getMethodsWithName(JavadocClass javadocClass, String name) {
     return getMethodsWithNameAndParam(javadocClass, name.replaceAll("\\(.+\\)", ""));
   }
@@ -175,6 +190,7 @@ public class JavadocManager {
    * @param javadocClass The class to get the methods for
    * @return All methods for the class
    */
+  @SuppressWarnings("WeakerAccess")
   public List<JavadocMethod> getAllMethods(JavadocClass javadocClass) {
     return methodParser.getMethods(javadocClass);
   }
@@ -182,8 +198,20 @@ public class JavadocManager {
   /**
    * @return The {@link JavadocSettings}
    */
+  @SuppressWarnings({"WeakerAccess", "unused"})
   public JavadocSettings getSettings() {
     return settings;
+  }
+
+  /**
+   * Rests all caches. You need to call {@link #index()} again to get anything.
+   *
+   * <em>You may want to call this when you have changed the base url.</em>
+   */
+  @SuppressWarnings("unused")
+  public void resetCache() {
+    packageMap.clear();
+    classMap.clear();
   }
 
   /**
